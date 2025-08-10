@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { deleteUser, resetCreate, resetDelete } from "../../redux/user/user.slide";
+import { deleteUser, resetDelete } from "../../redux/user/user.slide";
 import { toast } from "react-toastify";
 
 export const UserDeleteModal = (props: any) => {
