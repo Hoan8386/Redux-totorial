@@ -5,6 +5,7 @@ import { fetchListUser } from "../redux/user/user.slide";
 import { toast } from 'react-toastify';
 import { UserCreateModal } from "./modal/modal.create.use";
 import { UserUpdateModal } from "./modal/modal.update.use";
+import { UserDeleteModal } from "./modal/modal.delete.use"; // import modal xóa
 
 export const TableUser = () => {
     const dispatch = useAppDispatch();
@@ -15,6 +16,11 @@ export const TableUser = () => {
 
     // Modal update
     const [showUpdate, setShowUpdate] = useState(false);
+
+    // Modal delete
+    const [showDelete, setShowDelete] = useState(false);
+
+    // Dữ liệu user được chọn
     const [selectedUser, setSelectedUser] = useState<any>(null);
 
     useEffect(() => {
@@ -27,6 +33,11 @@ export const TableUser = () => {
     const handleShowUpdate = (user: any) => {
         setSelectedUser(user);
         setShowUpdate(true);
+    };
+
+    const handleShowDelete = (user: any) => {
+        setSelectedUser(user);
+        setShowDelete(true);
     };
 
     return (
@@ -43,7 +54,7 @@ export const TableUser = () => {
                         <th>Id</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>ACtion</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,13 +65,18 @@ export const TableUser = () => {
                             <td>{user.email}</td>
                             <td>
                                 <Button
-                                    className="mx-3"
+                                    className="mx-2"
                                     variant="warning"
                                     onClick={() => handleShowUpdate(user)}
                                 >
                                     Edit
                                 </Button>
-                                <Button variant="danger">Delete</Button>
+                                <Button
+                                    variant="danger"
+                                    onClick={() => handleShowDelete(user)}
+                                >
+                                    Delete
+                                </Button>
                             </td>
                         </tr>
                     ))}
@@ -77,6 +93,13 @@ export const TableUser = () => {
             <UserUpdateModal
                 show={showUpdate}
                 setShow={setShowUpdate}
+                userData={selectedUser}
+            />
+
+            {/* Modal xóa */}
+            <UserDeleteModal
+                show={showDelete}
+                setShow={setShowDelete}
                 userData={selectedUser}
             />
         </Container>

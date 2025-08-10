@@ -59,6 +59,17 @@ export const updateUser = createAsyncThunk(
     }
 )
 
+export const deleteUser = createAsyncThunk(
+    'users/deleteUser',
+    async (id: number, thunkAPI) => {
+        await fetch(`http://localhost:8000/users/${id}`, {
+            method: "DELETE"
+        });
+        thunkAPI.dispatch(fetchListUser());
+        return id;
+    }
+);
+
 // ===================== Slice =====================
 
 interface IUser {
@@ -71,10 +82,12 @@ const initialState: {
     listUser: IUser[];
     isCreateSuccess: boolean;
     isUpdateSuccess: boolean;
+    isDeleteSuccess: boolean
 } = {
     listUser: [],
     isCreateSuccess: false,
-    isUpdateSuccess: false
+    isUpdateSuccess: false,
+    isDeleteSuccess: false
 }
 
 export const userSlice = createSlice({
@@ -86,6 +99,10 @@ export const userSlice = createSlice({
         },
         resetUpdate(state) {
             state.isUpdateSuccess = false;
+        },
+        // Trong reducers
+        resetDelete(state) {
+            state.isDeleteSuccess = false;
         }
     },
     extraReducers: (builder) => {
@@ -98,10 +115,13 @@ export const userSlice = createSlice({
             })
             .addCase(updateUser.fulfilled, (state) => {
                 state.isUpdateSuccess = true;
+            })
+            .addCase(deleteUser.fulfilled, (state) => {
+                state.isDeleteSuccess = true;
             });
     }
 })
 
-export const { resetCreate, resetUpdate } = userSlice.actions;
+export const { resetCreate, resetUpdate, resetDelete } = userSlice.actions;
 
 export default userSlice.reducer;
